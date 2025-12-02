@@ -1,7 +1,7 @@
 import { Input, Button, List, Typography } from 'antd';
 import { useState } from 'react';
 import { useTodoStore } from '../store/todoStore';
-import './TodoListPage.css';
+import './TodoList.css';
 
 const { Title } = Typography;
 

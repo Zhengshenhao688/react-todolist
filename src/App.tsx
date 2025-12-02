@@ -2,7 +2,7 @@ import { Layout, Tabs } from 'antd';
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import type { TabsProps } from 'antd';
 
-import TodoListPage from './pages/TodoListPage';
+import TodoListPage from './pages/TodoList';
 import FormPage from './pages/FormPage';
 
 const { Header, Content } = Layout;
@@ -20,6 +20,8 @@ const NavigationTabs = () => {
 
   return (
     <Tabs
+      centered
+      size="large"
       items={items}
       activeKey={activeKey}
       onChange={(key) => navigate(key)}
