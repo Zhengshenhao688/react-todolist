@@ -63,7 +63,24 @@ export const useTodoStore = create<TodoStore>()(
       setTodos: (todos) => set({ todos }),
     }),
     {
-      name: 'todo-storage', 
+      name: 'todo-storage',
+      storage: {
+        getItem: (name) => {
+          const value = localStorage.getItem(name);
+          if (!value) return null;
+          return {
+            state: JSON.parse(value, (key, val) =>
+              key === 'createdAt' ? new Date(val) : val
+            ),
+          };
+        },
+        setItem: (name, value) => {
+          localStorage.setItem(name, JSON.stringify(value));
+        },
+        removeItem: (name) => {
+          localStorage.removeItem(name);
+        },
+      },
     }
   )
 );
