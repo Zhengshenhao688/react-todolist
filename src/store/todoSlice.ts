@@ -36,17 +36,30 @@ const todoSlice = createSlice({
       });
       localStorage.setItem('redux-todos', JSON.stringify(state.todos));
     },
+
     toggleTodo: (state, action: PayloadAction<string>) => {
       const todo = state.todos.find((t) => t.id === action.payload);
       if (todo) todo.completed = !todo.completed;
       localStorage.setItem('redux-todos', JSON.stringify(state.todos));
     },
+
     deleteTodo: (state, action: PayloadAction<string>) => {
       state.todos = state.todos.filter((t) => t.id !== action.payload);
+      localStorage.setItem('redux-todos', JSON.stringify(state.todos));
+    },
+
+    updateTodo: (state, action: PayloadAction<{ id: string; title: string }>) => {
+      const todo = state.todos.find((t) => t.id === action.payload.id);
+      if (todo) todo.title = action.payload.title;
+      localStorage.setItem('redux-todos', JSON.stringify(state.todos));
+    },
+
+    clearCompleted: (state) => {
+      state.todos = state.todos.filter((t) => !t.completed);
       localStorage.setItem('redux-todos', JSON.stringify(state.todos));
     },
   },
 });
 
-export const { addTodo, toggleTodo, deleteTodo, } = todoSlice.actions;
+export const { addTodo, toggleTodo, deleteTodo, updateTodo, clearCompleted } = todoSlice.actions;
 export default todoSlice.reducer;
