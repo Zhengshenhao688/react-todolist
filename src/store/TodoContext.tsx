@@ -12,6 +12,8 @@ interface TodoContextType {
   addTodo: (title: string) => void;
   toggleTodo: (id: string) => void;
   deleteTodo: (id: string) => void;
+  updateTodo: (id: string, title: string) => void;
+  clearCompleted: () => void;
 }
 
 const TodoContext = createContext<TodoContextType | undefined>(undefined);
@@ -38,9 +40,21 @@ export const TodoProvider = ({ children }: { children: React.ReactNode }) => {
     setTodos(todos.filter((t) => t.id !== id));
   };
 
+  const updateTodo = (id: string, title: string) => {
+    setTodos(prevTodos =>
+      prevTodos.map(todo =>
+        todo.id === id ? { ...todo, title } : todo
+      )
+    );
+  };
+
+  const clearCompleted = () => {
+    setTodos(prevTodos => prevTodos.filter(todo => !todo.completed));
+  };
+
   return (
     <TodoContext.Provider
-      value={{ todos, addTodo, toggleTodo, deleteTodo }}
+      value={{ todos, addTodo, toggleTodo, deleteTodo, updateTodo, clearCompleted }}
     >
       {children}
     </TodoContext.Provider>
