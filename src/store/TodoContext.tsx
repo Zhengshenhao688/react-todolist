@@ -16,9 +16,13 @@ interface TodoContextType {
   clearCompleted: () => void;
 }
 
+interface TodoProviderProps {
+  children: React.ReactNode;
+}
+
 const TodoContext = createContext<TodoContextType | undefined>(undefined);
 
-export const TodoProvider = ({ children }: { children: React.ReactNode }) => {
+export const TodoProvider = ({ children }: TodoProviderProps) => {
   const [todos, setTodos] = useState<TodoItem[]>(() => {
     const saved = localStorage.getItem('context-todos');
     if (saved) {
@@ -65,10 +69,17 @@ export const TodoProvider = ({ children }: { children: React.ReactNode }) => {
     setTodos(prevTodos => prevTodos.filter(todo => !todo.completed));
   };
 
+  const value: TodoContextType = {
+    todos,
+    addTodo,
+    toggleTodo,
+    deleteTodo,
+    updateTodo,
+    clearCompleted,
+  };
+
   return (
-    <TodoContext.Provider
-      value={{ todos, addTodo, toggleTodo, deleteTodo, updateTodo, clearCompleted }}
-    >
+    <TodoContext.Provider value={value}>
       {children}
     </TodoContext.Provider>
   );
