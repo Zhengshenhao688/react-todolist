@@ -37,8 +37,8 @@ const TodoListPage = () => {
   const reduxStore = {
     todos: reduxTodos,
     addTodo: (title: string) => dispatch(reduxAddTodo(title)),
-    toggleTodo: (id: number) => dispatch(reduxToggleTodo(id)),
-    deleteTodo: (id: number) => dispatch(reduxDeleteTodo(id)),
+    toggleTodo: (id: string) => dispatch(reduxToggleTodo(id)),
+    deleteTodo: (id: string) => dispatch(reduxDeleteTodo(id)),
   };
 
   /* ---------------- 统一 store getter ---------------- */

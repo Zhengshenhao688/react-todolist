@@ -1,16 +1,17 @@
 import React, { createContext, useContext, useState } from 'react';
 
 interface TodoItem {
-  id: number;
+  id: string;
   title: string;
   completed: boolean;
+  createdAt: Date;
 }
 
 interface TodoContextType {
   todos: TodoItem[];
   addTodo: (title: string) => void;
-  toggleTodo: (id: number) => void;
-  deleteTodo: (id: number) => void;
+  toggleTodo: (id: string) => void;
+  deleteTodo: (id: string) => void;
 }
 
 const TodoContext = createContext<TodoContextType | undefined>(undefined);
@@ -19,10 +20,13 @@ export const TodoProvider = ({ children }: { children: React.ReactNode }) => {
   const [todos, setTodos] = useState<TodoItem[]>([]);
 
   const addTodo = (title: string) => {
-    setTodos([...todos, { id: Date.now(), title, completed: false }]);
+    setTodos([
+      ...todos,
+      { id: Date.now().toString(), title, completed: false, createdAt: new Date() }
+    ]);
   };
 
-  const toggleTodo = (id: number) => {
+  const toggleTodo = (id: string) => {
     setTodos(
       todos.map((t) =>
         t.id === id ? { ...t, completed: !t.completed } : t
@@ -30,7 +34,7 @@ export const TodoProvider = ({ children }: { children: React.ReactNode }) => {
     );
   };
 
-  const deleteTodo = (id: number) => {
+  const deleteTodo = (id: string) => {
     setTodos(todos.filter((t) => t.id !== id));
   };
 

@@ -1,7 +1,7 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 interface TodoItem {
-  id: number;
+  id: string;
   title: string;
   completed: boolean;
 }
@@ -20,16 +20,16 @@ const todoSlice = createSlice({
   reducers: {
     addTodo: (state, action: PayloadAction<string>) => {
       state.todos.push({
-        id: Date.now(),
+        id: Date.now().toString(),
         title: action.payload,
         completed: false,
       });
     },
-    toggleTodo: (state, action: PayloadAction<number>) => {
+    toggleTodo: (state, action: PayloadAction<string>) => {
       const todo = state.todos.find((t) => t.id === action.payload);
       if (todo) todo.completed = !todo.completed;
     },
-    deleteTodo: (state, action: PayloadAction<number>) => {
+    deleteTodo: (state, action: PayloadAction<string>) => {
       state.todos = state.todos.filter((t) => t.id !== action.payload);
     },
   },

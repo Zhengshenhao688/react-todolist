@@ -1,38 +1,69 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
 interface TodoItem {
-  id: number;
+  id: string;
   title: string;
   completed: boolean;
+  createdAt: Date;
 }
 
 interface TodoStore {
   todos: TodoItem[];
   addTodo: (title: string) => void;
-  toggleTodo: (id: number) => void;
-  deleteTodo: (id: number) => void;
+  toggleTodo: (id: string) => void;
+  deleteTodo: (id: string) => void;
+  updateTodo: (id: string, title: string) => void;
+  clearCompleted: () => void;
+  setTodos: (todos: TodoItem[]) => void;
 }
 
-export const useTodoStore = create<TodoStore>((set) => ({
-  todos: [],
+export const useTodoStore = create<TodoStore>()(
+  persist(
+    (set) => ({
+      todos: [],
 
-  addTodo: (title) =>
-    set((state) => ({
-      todos: [
-        ...state.todos,
-        { id: Date.now(), title, completed: false },
-      ],
-    })),
+      addTodo: (title) =>
+        set((state) => ({
+          todos: [
+            ...state.todos,
+            {
+              id: Date.now().toString(),
+              title,
+              completed: false,
+              createdAt: new Date(),
+            },
+          ],
+        })),
 
-  toggleTodo: (id) =>
-    set((state) => ({
-      todos: state.todos.map((t) =>
-        t.id === id ? { ...t, completed: !t.completed } : t
-      ),
-    })),
+      toggleTodo: (id) =>
+        set((state) => ({
+          todos: state.todos.map((t) =>
+            t.id === id ? { ...t, completed: !t.completed } : t
+          ),
+        })),
 
-  deleteTodo: (id) =>
-    set((state) => ({
-      todos: state.todos.filter((t) => t.id !== id),
-    })),
-}));
+      deleteTodo: (id) =>
+        set((state) => ({
+          todos: state.todos.filter((t) => t.id !== id),
+        })),
+
+      updateTodo: (id, title) =>
+        set((state) => ({
+          todos: state.todos.map((t) =>
+            t.id === id ? { ...t, title } : t
+          ),
+        })),
+
+      clearCompleted: () =>
+        set((state) => ({
+          todos: state.todos.filter((t) => !t.completed),
+        })),
+
+      setTodos: (todos) => set({ todos }),
+    }),
+    {
+      name: 'todo-storage', 
+    }
+  )
+);
