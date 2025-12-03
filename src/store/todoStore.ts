@@ -1,5 +1,5 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 interface TodoItem {
   id: string;
@@ -50,9 +50,7 @@ export const useTodoStore = create<TodoStore>()(
 
       updateTodo: (id, title) =>
         set((state) => ({
-          todos: state.todos.map((t) =>
-            t.id === id ? { ...t, title } : t
-          ),
+          todos: state.todos.map((t) => (t.id === id ? { ...t, title } : t)),
         })),
 
       clearCompleted: () =>
@@ -63,16 +61,14 @@ export const useTodoStore = create<TodoStore>()(
       setTodos: (todos) => set({ todos }),
     }),
     {
-      name: 'todo-storage',
+      name: "todo-storage",
       storage: {
         getItem: (name) => {
           const value = localStorage.getItem(name);
           if (!value) return null;
-          return {
-            state: JSON.parse(value, (key, val) =>
-              key === 'createdAt' ? new Date(val) : val
-            ),
-          };
+          return JSON.parse(value, (key, val) =>
+            key === "createdAt" ? new Date(val) : val
+          );
         },
         setItem: (name, value) => {
           localStorage.setItem(name, JSON.stringify(value));
