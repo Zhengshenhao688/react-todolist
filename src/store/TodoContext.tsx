@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 interface TodoItem {
   id: string;
@@ -19,7 +19,20 @@ interface TodoContextType {
 const TodoContext = createContext<TodoContextType | undefined>(undefined);
 
 export const TodoProvider = ({ children }: { children: React.ReactNode }) => {
-  const [todos, setTodos] = useState<TodoItem[]>([]);
+  const [todos, setTodos] = useState<TodoItem[]>(() => {
+    const saved = localStorage.getItem('context-todos');
+    if (saved) {
+      return JSON.parse(saved, (key, value) =>
+        key === 'createdAt' ? new Date(value) : value
+      );
+    }
+    return [];
+  });
+
+  // Save to localStorage
+  useEffect(() => {
+    localStorage.setItem('context-todos', JSON.stringify(todos));
+  }, [todos]);
 
   const addTodo = (title: string) => {
     setTodos([
