@@ -178,7 +178,7 @@ const TodoList: React.FC = () => {
               padding: "28px 32px",
               display: "flex",
               flexDirection: "row",
-              alignItems: "flex-start",
+              alignItems: "center",
               gap: "32px",
             }}
           >
