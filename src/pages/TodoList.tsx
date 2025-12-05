@@ -173,6 +173,8 @@ const TodoList: React.FC = () => {
             style={{
               borderRadius: "16px",
               background: "#fafafa",
+              transition: "transform 0.18s ease, box-shadow 0.18s ease",
+              cursor: "pointer",
             }}
             bodyStyle={{
               padding: "28px 32px",
@@ -180,6 +182,14 @@ const TodoList: React.FC = () => {
               flexDirection: "row",
               alignItems: "center",
               gap: "32px",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = "translateY(-2px)";
+              e.currentTarget.style.boxShadow = "0 4px 10px rgba(0,0,0,0.10)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = "translateY(0)";
+              e.currentTarget.style.boxShadow = "none";
             }}
           >
             {/* 左侧：勾选框 */}
